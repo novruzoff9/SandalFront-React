@@ -1,6 +1,6 @@
 import { FaCog, FaCommentDots, FaHistory } from "react-icons/fa";
 
-function NotficiationsMenu() {
+function NotificiationsMenu() {
   return (
     <div id="notficiations-menu">
       <div className="header">
@@ -34,4 +34,4 @@ function NotficiationsMenu() {
   );
 }
 
-export default NotficiationsMenu;
+export default NotificiationsMenu;

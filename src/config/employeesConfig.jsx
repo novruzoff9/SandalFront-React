@@ -9,7 +9,7 @@ export const employeesConfig = {
     { key: "warehouseName", label: "Filial" },
     { key: "roles", label: "Rol" },
   ],
-  endpoint: "http://localhost:5002/api/employee",
+  endpoint: "http://104.248.36.17:5002/api/employee",
   renderActions: (employee) => (
     <>
       {/* Rolları Görüntüleme */}

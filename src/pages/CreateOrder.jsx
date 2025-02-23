@@ -9,14 +9,13 @@ function CreateOrder() {
   const loadOrderForm = async () => {
     try {
       const warehouses = await axiosInstance.get(
-        "http://localhost:5002/api/warehouse"
+        "http://104.248.36.17:5002/api/warehouse"
       );
       const products = await axiosInstance.get(
-        "http://localhost:5002/api/product"
+        "http://104.248.36.17:5002/api/product"
       );
 
       console.log(warehouses.data);
-      
 
       const warehouseSelect = document.getElementById("WarehouseIdSelect");
       warehouses.data.data.forEach((item) => {
@@ -40,7 +39,7 @@ function CreateOrder() {
   const additionalProductToOrder = async () => {
     try {
       const products = await axiosInstance.get(
-        "http://localhost:5002/api/product"
+        "http://104.248.36.17:5002/api/product"
       );
 
       const additionalProductsContainer = document.getElementById(
@@ -76,7 +75,7 @@ function CreateOrder() {
           <label htmlFor="WarehouseIdSelect">Hansı Anbardan:</label>
           <select name="WarehouseId" id="WarehouseIdSelect"></select>
 
-<input type="text" />
+          <input type="text" />
           <button
             onClick={additionalProductToOrder}
             type="button"

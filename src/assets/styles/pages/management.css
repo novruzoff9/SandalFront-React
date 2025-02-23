@@ -508,6 +508,7 @@ section h5 {
   header #notficiations-menu .content .alert svg {
     width: 36px;
     height: 36px;
+    padding: 6px;
     font-size: 20px;
     border-radius: 8px;
     display: flex;
@@ -585,18 +586,21 @@ section h5 {
     flex-direction: column;
     padding: 10px 20px;
   }
-  header #profile-menu .content a {
+  header #profile-menu .content a, header #profile-menu .content div, header #profile-menu .content button {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px;
+    border: none;
+    background-color: transparent;
     text-decoration: none;
     padding: 6px;
     border-radius: 8px;
   }
-  header #profile-menu .content a svg {
+  header #profile-menu .content a svg, header #profile-menu .content div svg, header #profile-menu .content button svg {
     width: 30px;
     height: 30px;
+    padding: 6px;
     font-size: 16px;
     border-radius: 8px;
     display: flex;
@@ -605,19 +609,19 @@ section h5 {
     background-color: #ddffff;
     color: #4056a1;
   }
-  header #profile-menu .content a p {
+  header #profile-menu .content a p, header #profile-menu .content div p, header #profile-menu .content button p {
     color: #030303;
     margin: 0;
     font-weight: 500;
   }
-  header #profile-menu .content a.logout svg {
+  header #profile-menu .content a.logout svg, header #profile-menu .content div.logout svg, header #profile-menu .content button.logout svg {
     background-color: #fbdbe1;
     color: #ff331f;
   }
-  header #profile-menu .content a.logout p {
+  header #profile-menu .content a.logout p, header #profile-menu .content div.logout p, header #profile-menu .content button.logout p {
     color: #ff331f;
   }
-  header #profile-menu .content a:hover {
+  header #profile-menu .content a:hover, header #profile-menu .content div:hover, header #profile-menu .content button:hover {
     background-color: rgba(170, 170, 170, 0.2666666667);
   }
   header.show-more {

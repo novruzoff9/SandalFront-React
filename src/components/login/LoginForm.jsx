@@ -23,7 +23,7 @@ function LoginForm() {
         body.append("password", password);
 
         try {
-            const response = await fetch("http://localhost:5001/connect/token", {
+            const response = await fetch("http://104.248.36.17:5001/connect/token", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",

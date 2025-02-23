@@ -9,7 +9,7 @@ export const completedOrdersConfig = {
     { key: "closed", label: "Bağlandığı tarix" },
     { key: "status", label: "Status" },
   ],
-  endpoint: "http://localhost:5002/api/order/completed",
+  endpoint: "http://104.248.36.17:5002/api/order/completed",
   renderActions: (order) => <OrderActions order={order} />,
 };
 

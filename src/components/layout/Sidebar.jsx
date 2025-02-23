@@ -6,6 +6,8 @@ import {
   FaWarehouse,
   FaReceipt,
   FaUserTie,
+  FaTable,
+  FaDolly,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -41,10 +43,17 @@ const Sidebar = ({ isMini }) => {
       { icon: <FaWarehouse />, text: "Anbarlar", link: "/warehouses" },
     ],
     warehouseman: [
-      { icon: <FaHome />, text: "Statistika", link: "/dashboard" },
-      { icon: <FaUser />, text: "İstifadəçilər", link: "/users" },
-      { icon: <FaHome />, text: "İşçilər", link: "/workers" },
-      { icon: <FaWarehouse />, text: "Anbarlar", link: "/warehouses" },
+      { icon: <FaTable />, text: "Rəflər", link: "/shelves" },
+      { icon: <FaDolly />, text: "Yerləşdirmə", link: "/deploy" },
+      {
+        icon: <FaReceipt />,
+        text: "Sifarişlər",
+        link: "/orders",
+        subMenu: [
+          { text: "Tamamlanmış", link: "/orders/completed" },
+          { text: "Aktiv", link: "/orders/active" },
+        ],
+      },
     ],
   };
 

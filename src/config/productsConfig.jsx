@@ -10,8 +10,8 @@ export const productsConfig = {
     { key: "sellPrice", label: "Satış Qiyməti" },
     { key: "quantity", label: "Say" },
   ],
-  endpoint: "http://localhost:5002/api/product",
-  postEnpoint: "http://localhost:5002/api/product",
+  endpoint: "http://104.248.36.17:5002/api/product",
+  postEnpoint: "http://104.248.36.17:5002/api/product",
   renderActions: (product) => <ProductActions product={product} />,
   inputs: [
     { label: "Ad", name: "name", type: "text" },
@@ -24,13 +24,14 @@ export const productsConfig = {
     },
     { label: "Satış Qiyməti", name: "SellPrice", type: "number", step: "0.01" },
     { label: "Miqdar", name: "Count", type: "number" },
+    { label: "Şəkil url", name: "ImageUrl", type: "text" }
   ],
 };
 
 const ProductActions = ({ product }) => {
   const deleteProduct = async (id) => {
     
-    const endpoint = `http://localhost:5002/api/product/${id}`;
+    const endpoint = `http://104.248.36.17:5002/api/product/${id}`;
     await axiosInstance.delete(endpoint).then((res) => {
       console.log(res);
     });

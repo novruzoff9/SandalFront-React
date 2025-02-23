@@ -7,10 +7,12 @@ import DynamicTable from "./pages/DynamicTable";
 import { productsConfig } from "./config/productsConfig";
 import { employeesConfig } from "./config/employeesConfig";
 import { warehousesConfig } from "./config/warehousesConfig";
+import { shelvesConfig } from "./config/shelvesConfig";
 import CreatePage from "./pages/CreatePage";
 import { activeOrdersConfig } from "./config/activeOrdersConfig";
 import { completedOrdersConfig } from "./config/completedOrdersConfig";
 import CreateOrder from "./pages/CreateOrder";
+import DeployProducts from "./pages/DeployProducts";
 
 function App() {
   return (
@@ -80,6 +82,22 @@ function App() {
         <Route
           path="/warehouses/create"
           element={<ProtectedRoute component={() => <CreatePage config={warehousesConfig} />} />}
+        />
+        <Route
+          path="/shelves"
+          element={
+            <ProtectedRoute
+              component={() => <DynamicTable config={shelvesConfig} />}
+            />
+          }
+        />
+        <Route
+          path="/shelves/create"
+          element={<ProtectedRoute component={() => <CreatePage config={shelvesConfig} />} />}
+        />
+        <Route
+          path="/deploy"
+          element={<ProtectedRoute component={() => <DeployProducts />} />}
         />
         <Route path="*" element={<ProtectedRoute component={Dashboard} />} />
       </Routes>
