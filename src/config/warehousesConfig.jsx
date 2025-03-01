@@ -9,7 +9,7 @@ export const warehousesConfig = {
     { key: "Capacity", label: "Tutumu" },
     { key: "WorkersCount", label: "İşçi" }
   ],
-  endpoint: "http://104.248.36.17:5002/api/warehouse",
+  endpoint: "/warehouse",
   renderActions: (item) => (
     <>
       <button

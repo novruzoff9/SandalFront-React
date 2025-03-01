@@ -9,7 +9,7 @@ export const shelvesConfig = {
     { key: "Capacity", label: "Tutumu" },
     { key: "itemsCount", label: "Olan" }
   ],
-  endpoint: "http://104.248.36.17:5002/api/shelf",
+  endpoint: "/shelf",
   renderActions: (shelf) => <ShelfActions shelf={shelf} />,
   inputs: [
     { label: "Rəf kodu", name: "code", type: "text" }
@@ -19,7 +19,7 @@ export const shelvesConfig = {
 const ShelfActions = ({ shelf }) => {
   const deleteShelf = async (id) => {
     
-    const endpoint = `http://104.248.36.17:5002/api/shelf/${id}`;
+    const endpoint = `/shelf/${id}`;
     await axiosInstance.delete(endpoint).then((res) => {
       console.log(res);
     });

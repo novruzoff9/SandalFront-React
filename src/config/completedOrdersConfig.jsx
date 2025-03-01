@@ -9,7 +9,7 @@ export const completedOrdersConfig = {
     { key: "closed", label: "Bağlandığı tarix" },
     { key: "status", label: "Status" },
   ],
-  endpoint: "http://104.248.36.17:5002/api/order/completed",
+  endpoint: "/order/completed",
   renderActions: (order) => <OrderActions order={order} />,
 };
 
@@ -18,6 +18,7 @@ const OrderActions = ({ order }) => {
 
   const viewDetails = (id) => {
     // define viewDetails function
+    window.location.href = `/orders/details/${id}`;
   };
 
   if (userRole === "boss") {

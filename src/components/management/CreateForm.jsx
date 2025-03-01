@@ -3,28 +3,25 @@ import axiosInstance from "../../services/axiosConfig";
 
 
 function CreateForm({ config }) {
-  useEffect(() => {
+  
+  const InsertData = () => async () => {
     const form = document.getElementById("addDataForm");
-    if (form) {
-      form.addEventListener("submit", InsertData);
-      form.reset();
-    } else {
-      console.error("Form element not found");
-    }
-  }, []);
-
-  const InsertData = () => async (e) => {
-    console.log(e.target);
     const formData = new FormData(form);
 
     const data = {};
     formData.forEach((value, key) => {
       data[key] = value;
     });
-    const response = await axiosInstance.post(config.postEnpoint, data);
 
+    console.log(data);
+    
+
+    
+    const response = await axiosInstance.post(config.endpoint, data);
+    
     if (response.ok) {
-      alert("Yeni veri başarıyla eklendi");
+      alert("Məhsul uğurla əlavə olundu");
+      form.reset();
     } else {
       alert("Bir hata oluştu");
     }
@@ -44,7 +41,7 @@ function CreateForm({ config }) {
             />
           </div>
         ))}
-        <button type="submit">Yarat</button>
+        <button type="button" onClick={InsertData()}>Əlavə et</button>
       </form>
     </div>
   );

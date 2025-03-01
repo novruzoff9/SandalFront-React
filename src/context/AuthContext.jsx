@@ -22,8 +22,11 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
+    if(localStorage.getItem("token") === null){
+      return;
+    }
     const fetchUserName = async () => {
-      const response = await axiosInstance.get("http://104.248.36.17:5002/api/employee/current");
+      const response = await axiosInstance.get("/employee/current");
       setUserName(response.data.data.userName);
     };
     fetchUserName();

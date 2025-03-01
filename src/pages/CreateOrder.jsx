@@ -9,13 +9,8 @@ function CreateOrder() {
   const loadOrderForm = async () => {
     try {
       const warehouses = await axiosInstance.get(
-        "http://104.248.36.17:5002/api/warehouse"
+        "/warehouse"
       );
-      const products = await axiosInstance.get(
-        "http://104.248.36.17:5002/api/product"
-      );
-
-      console.log(warehouses.data);
 
       const warehouseSelect = document.getElementById("WarehouseIdSelect");
       warehouses.data.data.forEach((item) => {
@@ -24,14 +19,9 @@ function CreateOrder() {
         option.text = item.name;
         warehouseSelect.appendChild(option);
       });
+      additionalProductToOrder();
 
-      const productSelect = document.getElementById("ProductIdSelect");
-      products.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.id;
-        option.text = item.name;
-        productSelect.appendChild(option);
-      });
+
     } catch (error) {
       console.error("Error loading form data:", error);
     }
@@ -39,7 +29,7 @@ function CreateOrder() {
   const additionalProductToOrder = async () => {
     try {
       const products = await axiosInstance.get(
-        "http://104.248.36.17:5002/api/product"
+        "/product"
       );
 
       const additionalProductsContainer = document.getElementById(
@@ -52,10 +42,11 @@ function CreateOrder() {
             <select name="ProductId" class="ProductIdSelect"></select>
             <label for="QuantityInput">Miqdar:</label>
             <input type="number" name="Quantity" class="QuantityInput" min="1" value="1">
+            <button type="button" class="deleteaction ml-2">Sil</button>
           `;
 
       const productSelect = newProductDiv.querySelector(".ProductIdSelect");
-      products.forEach((item) => {
+      products.data.data.forEach((item) => {
         const option = document.createElement("option");
         option.value = item.id;
         option.text = item.name;
@@ -67,6 +58,37 @@ function CreateOrder() {
       console.error("Error loading additional products:", error);
     }
   };
+
+  const CompleteOrder = async () => {
+
+    const products = [];
+    const productSelects = document.querySelectorAll(".ProductIdSelect");
+    const quantityInputs = document.querySelectorAll(".QuantityInput");
+    productSelects.forEach((productSelect, index) => {
+      const product = {
+        ProductId: productSelect.value,
+        Quantity: quantityInputs[index].value,
+      };
+      products.push(product);
+    });
+
+    const orderData = {
+      WarehouseId: document.getElementById("WarehouseIdSelect").value,
+      OrderItems: products,
+    }
+    const response = await axiosInstance.post("/order", orderData);
+    console.log(orderData);
+    
+    console.log(response);
+    
+    if (response.status === 200) {
+      alert("Sifariş uğurla yaradıldı");
+      window.location.href = "/orders/active";
+    } else {
+      alert("Sifariş yaradılmadı");
+    }
+
+  };
   return (
     <Layout>
       <div id="addDataContainer">
@@ -75,19 +97,19 @@ function CreateOrder() {
           <label htmlFor="WarehouseIdSelect">Hansı Anbardan:</label>
           <select name="WarehouseId" id="WarehouseIdSelect"></select>
 
-          <input type="text" />
           <button
             onClick={additionalProductToOrder}
             type="button"
             id="addProductButton"
+            className="successaction mb-2"
           >
             Məhsul Artır
           </button>
           <div id="additionalProductsContainer"></div>
 
           <button
-            type="submit"
-            //onClick="CompleteOrder()"
+            type="button"
+            onClick={CompleteOrder}
             className="primaryaction"
           >
             Sifarişi tamamla

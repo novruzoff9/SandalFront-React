@@ -13,6 +13,8 @@ import { activeOrdersConfig } from "./config/activeOrdersConfig";
 import { completedOrdersConfig } from "./config/completedOrdersConfig";
 import CreateOrder from "./pages/CreateOrder";
 import DeployProducts from "./pages/DeployProducts";
+import { companiesConfig } from "./config/companiesConfig";
+import OrderDetails from "./pages/OrderDetails";
 
 function App() {
   return (
@@ -22,6 +24,18 @@ function App() {
         <Route
           path="/dashboard"
           element={<ProtectedRoute component={Dashboard} />}
+        />
+        <Route
+          path="/companies"
+          element={
+            <ProtectedRoute
+              component={() => <DynamicTable config={companiesConfig} />}
+            />
+          }
+        />
+        <Route
+          path="/companies/create"
+          element={<ProtectedRoute component={() => <CreatePage config={companiesConfig} />} />}
         />
         <Route
           path="/products"
@@ -62,6 +76,10 @@ function App() {
               component={() => <DynamicTable config={completedOrdersConfig} />}
             />
           }
+        />
+        <Route
+          path="/orders/details/:id"
+          element={<ProtectedRoute component={() => <OrderDetails />} />}
         />
         <Route
           path="/orders/create"

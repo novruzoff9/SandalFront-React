@@ -8,7 +8,7 @@ const MonthlySalesChart = () => {
 
   // API'den veriyi çek
   const getMonthlySales = async () => {
-    const endpoint = "http://104.248.36.17:5002/api/order/monthly-sales";
+    const endpoint = "/order/monthly-sales";
 
     axiosInstance.get(endpoint).then((response) => {
       setMonthlySales(response.data);

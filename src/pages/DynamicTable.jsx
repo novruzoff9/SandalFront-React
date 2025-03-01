@@ -10,7 +10,6 @@ function DynamicTable({ config }) {
   const getAllData = async () => {
     const response = await axiosInstance.get(config.endpoint);
     setData(response.data.data);
-    //console.log(response.data.data);
     
   };
 

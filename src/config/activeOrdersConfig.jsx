@@ -1,5 +1,6 @@
 import { FaTrash, FaInfo, FaPen } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import axiosInstance from "../services/axiosConfig";
 
 export const activeOrdersConfig = {
   title: "Sifariş",
@@ -9,8 +10,8 @@ export const activeOrdersConfig = {
     { key: "closed", label: "Bağlandığı tarix" },
     { key: "status", label: "Status" },
   ],
-  endpoint: "http://104.248.36.17:5002/api/order/active",
-  renderActions: (order) => <OrderActions order={order} />,  
+  endpoint: "/order/active",
+  renderActions: (order) => <OrderActions order={order} />,
 };
 
 const OrderActions = ({ order }) => {
@@ -20,12 +21,19 @@ const OrderActions = ({ order }) => {
     // define editOrder function
   };
 
-  const deleteOrder = (id) => {
-    // define deleteOrder function
+  const deleteOrder = async (id) => {
+    const response = await axiosInstance.delete(`/order/${id}`);
+    if (response.status === 200) {
+      alert("Sifariş uğurla silindi");
+      window.location.reload();
+    } else {
+      alert("Sifariş bağlanmadı");
+    }
   };
 
-  const viewDetails = (id) => {
+  const viewDetails = async (id) => {
     // define viewDetails function
+    window.location.href = `/orders/details/${id}`;
   };
 
   const prepareOrder = (id) => {

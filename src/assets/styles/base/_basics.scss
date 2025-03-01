@@ -6,17 +6,17 @@ body {
   background-color: $light-grey !important;
 }
 
-button{
-  &.primaryaction{
+button {
+  &.primaryaction {
     @include action-button($dark-blue);
   }
-  &.deleteaction{
+  &.deleteaction {
     @include action-button($red);
   }
-  &.successaction{
+  &.successaction {
     @include action-button($green);
   }
-  &.secondaryaction{
+  &.secondaryaction {
     @include action-button($dark-grey);
   }
 }
@@ -74,7 +74,7 @@ section {
       cursor: pointer;
     }
 
-    button{
+    button {
       margin-top: 10px;
       cursor: pointer;
     }
@@ -101,28 +101,30 @@ section {
 
 #addDataContainer form,
 .form-container {
+  display: flex;
+  flex-direction: column;
+  .inputGroup {
     display: flex;
     flex-direction: column;
-    .inputGroup{
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 10px;
-      label {
-        margin-bottom: 6px;
-        color: #2d2f31;
-      }
-      input,
-      select {
-        margin-bottom: 14px;
-        @include input();
-      }
-    }
-    button:last-of-type {
-      @include action-button($dark-blue);
-    }
+    margin-bottom: 10px;
+  }
+  label {
+    margin-bottom: 6px;
+    color: #2d2f31;
+  }
+  input,
+  select {
+    margin-bottom: 14px;
+    @include input();
   }
 
-#roleEditModal, #changeBranchModal {
+  button:last-of-type {
+    @include action-button($dark-blue);
+  }
+}
+
+#roleEditModal,
+#changeBranchModal {
   .modal-content {
     h2 {
       margin-bottom: 20px;

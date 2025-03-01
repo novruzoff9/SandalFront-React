@@ -4,7 +4,8 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 
 const axiosInstance = axios.create({
-  baseURL: "http://104.248.36.17:5002/api", // Tüm istekler için temel URL
+  //baseURL: "http://104.248.36.17:5002/api", // Tüm istekler için temel URL
+  baseURL: "http://localhost:5002/api", // Tüm istekler için temel URL
   headers: {
     Authorization: `Bearer ${token}`,
   },

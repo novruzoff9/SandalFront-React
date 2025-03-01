@@ -1,5 +1,4 @@
 import {
-  FaUser,
   FaHome,
   FaBuilding,
   FaBoxes,
@@ -24,7 +23,6 @@ const Sidebar = ({ isMini }) => {
   const sidebarItems = {
     admin: [
       { icon: <FaHome />, text: "Statistika", link: "/dashboard" },
-      { icon: <FaHome />, text: "İşçilər", link: "/workers" },
       { icon: <FaBuilding />, text: "Şirkətlər", link: "/companies" },
     ],
     boss: [
@@ -60,7 +58,7 @@ const Sidebar = ({ isMini }) => {
   return (
     <aside className={isMini ? "mini-show" : ""}>
       <Link to="/dashboard" id="aside_head">
-        <img src="/src/assets/images/Logo.png" alt="" />
+        <img src="/public/images/Logo.png" alt="" />
         <p>Sandal</p>
       </Link>
       <ul>
