@@ -59,7 +59,7 @@ const MonthlySalesChart = () => {
   return (
     <div
       className="chart-container"
-      style={{ position: "relative", height: "40vh", width: "80vw" }}
+      style={{ position: "relative", height: "40vh", width: "40vw" }}
     >
       <canvas id="myChart"></canvas>
     </div>

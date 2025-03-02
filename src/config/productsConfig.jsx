@@ -1,5 +1,6 @@
-import { FaTrash } from "react-icons/fa";
+import { FaInfo, FaTrash } from "react-icons/fa";
 import axiosInstance from "../services/axiosConfig";
+import Swal from "sweetalert2";
 
 export const productsConfig = {
   title: "Məhsul",
@@ -24,26 +25,47 @@ export const productsConfig = {
     },
     { label: "Satış Qiyməti", name: "SellPrice", type: "number", step: "0.01" },
     { label: "Miqdar", name: "Count", type: "number" },
-    { label: "Şəkil url", name: "ImageUrl", type: "text" }
+    { label: "Şəkil url", name: "ImageUrl", type: "text" },
   ],
 };
 
 const ProductActions = ({ product }) => {
-  const deleteProduct = async (id) => {
-    
-    const endpoint = `/product/${id}`;
-    await axiosInstance.delete(endpoint).then(() => {
-      window.location.reload();
+  const deleteProduct = (id) => {
+    Swal.fire({
+      title: "Silmək istədiyinizə əminsiniz?",
+      text: "Bu əməliyyatı geri qaytarmaq mümkün olmayacaq!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Bəli, sil!",
+      cancelButtonText: "Xeyr, imtina et",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const endpoint = `/product/${id}`;
+        await axiosInstance.delete(endpoint).then(async() => {
+          await Swal.fire({
+            title: "Silmək uğurla başa çatdı!",
+            text: "Məhsul silindi",
+            icon: "success",
+            timer: 1500,
+            timerProgressBar: true,
+          });
+
+          window.location.reload();
+        });
+        
+      }
     });
   };
 
   const viewLocations = (id) => {
     // define viewLocations function
-  }
+  };
   return (
     <>
       <button className="primary" onClick={() => viewLocations(product.id)}>
-        yy
+        <FaInfo />
       </button>
       <button className="delete" onClick={() => deleteProduct(product.id)}>
         <FaTrash />{" "}

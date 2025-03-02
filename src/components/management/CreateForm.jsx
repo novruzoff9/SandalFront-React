@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import axiosInstance from "../../services/axiosConfig";
+import Swal from "sweetalert2";
 
 
 function CreateForm({ config }) {
@@ -19,9 +20,17 @@ function CreateForm({ config }) {
     
     const response = await axiosInstance.post(config.endpoint, data);
     
-    if (response.ok) {
-      alert("Məhsul uğurla əlavə olundu");
-      form.reset();
+    if (response.status === 200) {
+      await Swal.fire({
+        title: "Əməliyyat uğurla yerinə yetirildi",
+        text: "Məlumat əlavə olundu",
+        icon: "success",
+        timer: 1000,
+        timerProgressBar: true,
+      });
+      const currentUrl = window.location.href;
+      window.location.href = `/${currentUrl.split("/")[3]}`;
+
     } else {
       alert("Bir hata oluştu");
     }

@@ -1,7 +1,7 @@
 import Layout from '../components/layout/Layout'
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../services/axiosConfig';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function OrderDetails() {
     const {id} = useParams();
