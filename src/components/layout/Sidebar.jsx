@@ -7,6 +7,7 @@ import {
   FaUserTie,
   FaTable,
   FaDolly,
+  FaFileExport,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -39,6 +40,7 @@ const Sidebar = ({ isMini }) => {
       },
       { icon: <FaBoxes />, text: "Məhsullar", link: "/products" },
       { icon: <FaWarehouse />, text: "Anbarlar", link: "/warehouses" },
+      { icon: <FaFileExport />, text: "Çıxarışlar", link: "/exports" },
     ],
     warehouseman: [
       { icon: <FaTable />, text: "Rəflər", link: "/shelves" },

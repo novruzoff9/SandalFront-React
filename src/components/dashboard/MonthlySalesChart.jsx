@@ -6,7 +6,6 @@ const MonthlySalesChart = () => {
   const [chartInstance, setChartInstance] = useState(null);
   const [monthlySales, setMonthlySales] = useState([]);
 
-  // API'den veriyi çek
   const getMonthlySales = async () => {
     const endpoint = "/order/monthly-sales";
 
@@ -23,7 +22,6 @@ const MonthlySalesChart = () => {
     if (monthlySales.length > 0) {
       const ctx = document.getElementById("myChart").getContext("2d");
 
-      // Eğer eski bir chart varsa, önce onu yok et
       if (chartInstance) {
         chartInstance.destroy();
       }
@@ -46,7 +44,6 @@ const MonthlySalesChart = () => {
           scales: {
             y: {
               beginAtZero: true,
-              max: 10,
             },
           },
         },

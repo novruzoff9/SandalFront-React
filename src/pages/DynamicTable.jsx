@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Table from "../components/management/Table";
 import Layout from "../components/layout/Layout";
 import InsertDataBtn from "../components/management/InsertDataBtn";
@@ -19,7 +20,7 @@ function DynamicTable({ config }) {
 
   return (
     <Layout>
-      <InsertDataBtn newDataName={config.title} />
+      <InsertDataBtn newDataName={config.title} endpoint={config.endpoint} />
       <br />
       <Table
         columns={config.columns}
@@ -29,5 +30,13 @@ function DynamicTable({ config }) {
     </Layout>
   );
 }
+DynamicTable.propTypes = {
+  config: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    endpoint: PropTypes.string.isRequired,
+    columns: PropTypes.array.isRequired,
+    renderActions: PropTypes.func,
+  }).isRequired,
+};
 
 export default DynamicTable;

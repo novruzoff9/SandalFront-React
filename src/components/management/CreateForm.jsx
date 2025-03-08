@@ -5,6 +5,23 @@ import Swal from "sweetalert2";
 
 function CreateForm({ config }) {
   
+
+  useEffect(() => {
+    config.inputs.forEach(element => {
+      if(element.type === "select"){
+        const select = document.getElementById(element.name + "inpt");
+        axiosInstance.get(element.endpoint).then((response) => {
+          response.data.data.forEach((data) => {
+            const option = document.createElement("option");
+            option.value = data.id;
+            option.text = data.name;
+            select.appendChild(option);
+          });
+        });
+      }
+    });
+  }, []);
+
   const InsertData = () => async () => {
     const form = document.getElementById("addDataForm");
     const formData = new FormData(form);
@@ -14,13 +31,10 @@ function CreateForm({ config }) {
       data[key] = value;
     });
 
-    console.log(data);
-    
-
-    
     const response = await axiosInstance.post(config.endpoint, data);
     
-    if (response.status === 200) {
+
+    if (response.data.statusCode === 200) {
       await Swal.fire({
         title: "Əməliyyat uğurla yerinə yetirildi",
         text: "Məlumat əlavə olundu",
@@ -32,7 +46,11 @@ function CreateForm({ config }) {
       window.location.href = `/${currentUrl.split("/")[3]}`;
 
     } else {
-      alert("Bir hata oluştu");
+      const errorMessages = document.getElementById("errormessages");
+      errorMessages.innerHTML = "";
+      response.data.errors.forEach((error) => {
+        errorMessages.innerHTML += `<p style="color:red;">*${error}</p>`;
+      });
     }
   };
   return (
@@ -42,15 +60,22 @@ function CreateForm({ config }) {
         {config.inputs.map((input) => (
           <div key={input.name} className="inputGroup">
             <label htmlFor={input.name + "inpt"}>{input.label}:</label>
-            <input
-              id={input.name + "inpt"}
-              type={input.type}
-              name={input.name}
-              step={input.step}
-            />
+            {input.type === "select" ? (
+              <select id={input.name + "inpt"} name={input.name}>
+                <option value="">-- Seçin --</option>
+              </select>
+            ) : (
+              <input
+                id={input.name + "inpt"}
+                type={input.type}
+                name={input.name}
+                step={input.step}
+              />
+            )}
           </div>
         ))}
         <button type="button" onClick={InsertData()}>Əlavə et</button>
+        <div id="errormessages"></div>
       </form>
     </div>
   );

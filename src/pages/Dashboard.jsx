@@ -2,6 +2,7 @@ import Layout from "../components/layout/Layout";
 import MonthlySalesChart from "../components/dashboard/MonthlySalesChart";
 import { useAuth } from "../context/AuthContext";
 import WarehouseOccupancy from "../components/dashboard/WarehouseOccupancy";
+import SalesInOutComeChart from "../components/dashboard/SalesInOutComeChart";
 
 function Dashboard() {
   const { userRole } = useAuth();
@@ -12,6 +13,9 @@ function Dashboard() {
         <div className="d-flex">
           <MonthlySalesChart />
           <WarehouseOccupancy />
+        </div>
+        <div className="d-flex">
+          <SalesInOutComeChart />
         </div>
       </Layout>
     );

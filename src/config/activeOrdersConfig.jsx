@@ -38,6 +38,7 @@ const OrderActions = ({ order }) => {
 
   const prepareOrder = (id) => {
     // define prepareOrder function
+    window.location.href = `/orders/prepare/${id}`;
   };
 
   if (userRole === "boss") {
@@ -56,7 +57,7 @@ const OrderActions = ({ order }) => {
     );
   } else if (userRole === "warehouseman") {
     return (
-      <button onClick={() => prepareOrder(order.id)} className="primaryaction">
+      <button onClick={() => prepareOrder(order.id)} className="primaryaction" style={{"width": "100%"}}>
         Sifarişi hazırla
       </button>
     );

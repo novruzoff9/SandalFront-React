@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('Nov2005!!');
+    const [roles, setRoles] = useState('');
     const navigate = useNavigate();
 
 
@@ -41,18 +42,26 @@ function LoginForm() {
             const token = data.access_token;
             localStorage.setItem("token", token);
 
-            const decodedToken = jwtDecode(token);
-            const roles = decodedToken.roles;
-
-            if (roles.includes("admin") || roles.includes("boss") || roles.includes("warehouseman")) {
-                navigate("/dashboard");
-            } else {
-                console.log("Rol tapılmadı!");
-            }
+            const decodedToken = await jwtDecode(token);
+            console.log(decodedToken);
+            
+            Redirect(decodedToken.roles);
         } catch (error) {
             console.log("Error: " + error.message);
         }
     };
+
+    const Redirect = (role) =>{
+        console.log(role);
+        
+        if (role ===  "admin" || role === "boss" || role === "warehouseman") {
+            console.log("dadadad");
+            
+            window.location.href = "/dashboard";
+        } else {
+            console.log("Rol tapılmadı!");
+        }
+    }
 
     const handleGuestLogin = () => {
         navigate("/views/user/Companies.html");

@@ -2,7 +2,7 @@ import { FaPlus } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import ImportDataBtn from "./ImportDataBtn";
 
-function InsertDataBtn({ newDataName }) {
+function InsertDataBtn({ newDataName, endpoint }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,7 +17,7 @@ function InsertDataBtn({ newDataName }) {
 
   return (
     <div className="d-flex justify-content-between">
-      <ImportDataBtn title={newDataName}/>
+      <ImportDataBtn title={newDataName} endpoint={endpoint}/>
       <button id="adddata" className="addrow" onClick={handleClick}>
         <FaPlus />
         <p>

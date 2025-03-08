@@ -15,6 +15,8 @@ import CreateOrder from "./pages/CreateOrder";
 import DeployProducts from "./pages/DeployProducts";
 import { companiesConfig } from "./config/companiesConfig";
 import OrderDetails from "./pages/OrderDetails";
+import ExportPage from "./pages/ExportPage";
+import PrepareOrder from "./pages/PrepareOrder";
 
 function App() {
   return (
@@ -82,6 +84,10 @@ function App() {
           element={<ProtectedRoute component={() => <OrderDetails />} />}
         />
         <Route
+          path="orders/prepare/:id"
+          element={<ProtectedRoute component={() => <PrepareOrder />} />}
+        />
+        <Route
           path="/orders/create"
           element={
             <ProtectedRoute
@@ -114,9 +120,14 @@ function App() {
           element={<ProtectedRoute component={() => <CreatePage config={shelvesConfig} />} />}
         />
         <Route
+          path="/exports"
+          element={<ProtectedRoute component={() => <ExportPage />} />}
+        />
+        <Route
           path="/deploy"
           element={<ProtectedRoute component={() => <DeployProducts />} />}
         />
+        
         <Route path="*" element={<ProtectedRoute component={Dashboard} />} />
       </Routes>
     </AuthProvider>
