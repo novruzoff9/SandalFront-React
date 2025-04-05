@@ -26,7 +26,7 @@ function SalesInOutComeChart() {
         const newChart = new Chart(ctx, {
           type: "bar",
           data: {
-            labels: monthlySales.map((sale) => `${sale.month}. ay`),
+            labels: monthlySales.map((sale) => `${sale.month.substring(0, 7)}. ay`),
             datasets: [
               {
                 label: "Aylıq gəlirlər",

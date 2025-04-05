@@ -12,6 +12,10 @@ function CreateOrder() {
         "/warehouse"
       );
 
+      const customers = await axiosInstance.get(
+        "/customer"
+      );
+
       const warehouseSelect = document.getElementById("WarehouseIdSelect");
       warehouses.data.data.forEach((item) => {
         const option = document.createElement("option");
@@ -19,6 +23,15 @@ function CreateOrder() {
         option.text = item.name;
         warehouseSelect.appendChild(option);
       });
+
+      const customersSelect = document.getElementById("CustomerIdSelect");
+      customers.data.data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.text = item.fullName;
+        customersSelect.appendChild(option);
+      });
+
       additionalProductToOrder();
 
 
@@ -50,6 +63,8 @@ function CreateOrder() {
         const option = document.createElement("option");
         option.value = item.id;
         option.text = item.name;
+        option.setAttribute("data-price", item.sellPrice);
+        option.setAttribute("data-imageUrl", item.imageUrl);
         productSelect.appendChild(option);
       });
 
@@ -68,18 +83,37 @@ function CreateOrder() {
       const product = {
         ProductId: productSelect.value,
         Quantity: quantityInputs[index].value,
+        ProductName: productSelect.options[productSelect.selectedIndex].text,
+        UnitPrice: productSelect.options[productSelect.selectedIndex].getAttribute("data-price"),
+        ImageUrl: productSelect.options[productSelect.selectedIndex].getAttribute("data-imageUrl")
       };
       products.push(product);
     });
 
+    const warehouseId = document.getElementById("WarehouseIdSelect").value;
+    const warehouseName = document.getElementById("WarehouseIdSelect").options[document.getElementById("WarehouseIdSelect").selectedIndex].text;
+    const customerId = document.getElementById("CustomerIdSelect").value;
+    const city = document.getElementById("CityInput").value;
+    const district = document.getElementById("DistrictInput").value;
+    const street = document.getElementById("StreetInput").value;
+    const zipCode = document.getElementById("ZipCodeInput").value;
+    const address = {
+      City: city,
+      District: district,
+      Street: street,
+      ZipCode: zipCode,
+    };
+
     const orderData = {
-      WarehouseId: document.getElementById("WarehouseIdSelect").value,
+      WarehouseId: warehouseId,
+      WarehouseName: warehouseName,
       OrderItems: products,
+      CustomerId: customerId,
+      Address: address,
     }
+
+
     const response = await axiosInstance.post("/order", orderData);
-    console.log(orderData);
-    
-    console.log(response);
     
     if (response.status === 200) {
       alert("Sifariş uğurla yaradıldı");
@@ -97,6 +131,22 @@ function CreateOrder() {
           <label htmlFor="WarehouseIdSelect">Hansı Anbardan:</label>
           <select name="WarehouseId" id="WarehouseIdSelect"></select>
 
+          <label htmlFor="CustomerIdSelect">Hansı Müştəriyə:</label>
+          <select name="CustomerId" id="CustomerIdSelect"></select>
+
+          <div className="d-flex gap-2 align-items-center flex-wrap"> 
+            <label htmlFor="CityInput" className="mb-3">Şəhər:</label>
+            <input type="text" id="CityInput" name="City" placeholder="Şəhər adı" />
+
+            <label htmlFor="DistrictInput" className="mb-3">Rayon:</label>
+            <input type="text" id="DistrictInput" name="District" placeholder="Rayon adı" />
+
+            <label htmlFor="StreetInput" className="mb-3">Küçə:</label>
+            <input type="text" id="StreetInput" name="Street" placeholder="Küçə adı" />
+
+            <label htmlFor="ZipCodeInput" className="mb-3">Poçt Kodu:</label>
+            <input type="text" id="ZipCodeInput" name="ZipCode" placeholder="AZxxxx" />
+          </div>
           <button
             onClick={additionalProductToOrder}
             type="button"

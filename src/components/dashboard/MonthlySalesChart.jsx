@@ -29,7 +29,7 @@ const MonthlySalesChart = () => {
       const newChart = new Chart(ctx, {
         type: "line",
         data: {
-          labels: monthlySales.map((sale) => `${sale.month}. ay`),
+          labels: monthlySales.map((sale) => `${sale.month.substring(0,7)}. ay`),
           datasets: [
             {
               label: "Aylıq satışlar",

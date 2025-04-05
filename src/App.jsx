@@ -9,14 +9,15 @@ import { employeesConfig } from "./config/employeesConfig";
 import { warehousesConfig } from "./config/warehousesConfig";
 import { shelvesConfig } from "./config/shelvesConfig";
 import CreatePage from "./pages/CreatePage";
-import { activeOrdersConfig } from "./config/activeOrdersConfig";
-import { completedOrdersConfig } from "./config/completedOrdersConfig";
 import CreateOrder from "./pages/CreateOrder";
 import DeployProducts from "./pages/DeployProducts";
 import { companiesConfig } from "./config/companiesConfig";
 import OrderDetails from "./pages/OrderDetails";
 import ExportPage from "./pages/ExportPage";
 import PrepareOrder from "./pages/PrepareOrder";
+import OrderList from "./pages/OrderList";
+import { CustomerConfig } from "./config/customerConfig";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   return (
@@ -52,6 +53,10 @@ function App() {
           element={<ProtectedRoute component={() => <CreatePage config={productsConfig} />} />}
         />
         <Route
+          path="/products/details/:id"
+          element={<ProtectedRoute component={() => <ProductDetails />} />}
+        />
+        <Route
           path="/employees"
           element={
             <ProtectedRoute
@@ -63,22 +68,8 @@ function App() {
           path="/employees/create"
           element={<ProtectedRoute component={() => <CreatePage config={employeesConfig} />} />}
         />
-        <Route
-          path="/orders/active"
-          element={
-            <ProtectedRoute
-              component={() => <DynamicTable config={activeOrdersConfig} />}
-            />
-          }
-        />
-        <Route
-          path="/orders/completed"
-          element={
-            <ProtectedRoute
-              component={() => <DynamicTable config={completedOrdersConfig} />}
-            />
-          }
-        />
+        <Route path="/orders/:status" element={<ProtectedRoute component={() => <OrderList />} />} />
+
         <Route
           path="/orders/details/:id"
           element={<ProtectedRoute component={() => <OrderDetails />} />}
@@ -94,6 +85,18 @@ function App() {
               component={() => <CreateOrder />}
             />
           }
+        />
+        <Route
+          path="/customers"
+          element={
+            <ProtectedRoute
+              component={() => <DynamicTable config={CustomerConfig} />}
+            />
+          }
+        />
+        <Route
+          path="/customers/create"
+          element={<ProtectedRoute component={() => <CreatePage config={CustomerConfig} />} />}
         />
         <Route
           path="/warehouses"

@@ -1,6 +1,6 @@
 function Table({ columns, data, renderActions }) {
   if (columns === null || data === null || renderActions === null) {
-    console.log("Loading...");
+    console.info("Loading...");
     return <div>Loading...</div>;
   }
 

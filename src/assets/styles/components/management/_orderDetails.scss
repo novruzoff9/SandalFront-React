@@ -1,0 +1,30 @@
+.badge {
+    display: inline-block;
+    padding: 0.5em 1em;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 0.25rem;
+    //background-color: #17a2b8;
+    color: white;
+}
+.badge.Shipped {
+    background-color: #28a745;
+}
+.badge.Prepared {
+    background-color: #ffc107;
+}
+.badge.Cancelled {
+    background-color: #dc3545;
+}
+.badge.Submitted {
+    background-color: #17a2b8;
+}
+.badge.Stockconfirmed {
+    background-color: #007bff;
+}
+.order-card {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}

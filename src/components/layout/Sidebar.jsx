@@ -10,6 +10,7 @@ import {
   FaFileExport,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import { useAuth } from "../../context/AuthContext";
 import SidebarItem from "./SidebarItem";
 
@@ -34,11 +35,15 @@ const Sidebar = ({ isMini }) => {
         text: "Sifarişlər",
         link: "/orders",
         subMenu: [
-          { text: "Tamamlanmış", link: "/orders/completed" },
-          { text: "Aktiv", link: "/orders/active" },
+          { text: "Tamamlanmış", link: "/orders/shipped" },
+          { text: "Hazırlanmış", link: "/orders/prepared" },
+          { text: "Yoxlanılmış", link: "/orders/stockconfirmed" },
+          { text: "Aktiv", link: "/orders/submitted" },
+          { text: "İmtina", link: "/orders/cancelled" }
         ],
       },
       { icon: <FaBoxes />, text: "Məhsullar", link: "/products" },
+      { icon: <FaUserTie />, text: "Müştərilər", link: "/customers" },
       { icon: <FaWarehouse />, text: "Anbarlar", link: "/warehouses" },
       { icon: <FaFileExport />, text: "Çıxarışlar", link: "/exports" },
     ],
@@ -51,7 +56,7 @@ const Sidebar = ({ isMini }) => {
         link: "/orders",
         subMenu: [
           { text: "Tamamlanmış", link: "/orders/completed" },
-          { text: "Aktiv", link: "/orders/active" },
+          { text: "Aktiv", link: "/orders/stockconfirmed" },
         ],
       },
     ],
@@ -77,5 +82,10 @@ const Sidebar = ({ isMini }) => {
     </aside>
   );
 };
-
+Sidebar.propTypes = {
+  isMini: PropTypes.bool.isRequired,
+};
+Sidebar.defaultProps = {
+  isMini: false,
+};
 export default Sidebar;

@@ -1,5 +1,6 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import axiosInstance from "../services/axiosConfig";
+import Swal from "sweetalert2";
 
 // Shelves Tablosu Konfigürasyonu
 export const shelvesConfig = {
@@ -21,7 +22,24 @@ const ShelfActions = ({ shelf }) => {
     
     const endpoint = `/shelf/${id}`;
     await axiosInstance.delete(endpoint).then((res) => {
-      console.log(res);
+      if (res.status === 200) {
+        Swal.fire({
+          title: "Silindi",
+          text: "Rəf silindi",
+          icon: "success",
+          timer: 1500,
+          timerProgressBar: true,
+        });
+        window.location.reload();
+      } else {
+        Swal.fire({
+          title: "Xəta",
+          text: "Rəf silinmədi",
+          icon: "error",
+          timer: 1500,
+          timerProgressBar: true,
+        });
+      }
     });
   };
 

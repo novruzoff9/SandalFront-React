@@ -117,10 +117,6 @@ section {
     margin-bottom: 14px;
     @include input();
   }
-
-  button:last-of-type {
-    @include action-button($dark-blue);
-  }
 }
 
 #roleEditModal,
@@ -139,9 +135,6 @@ section {
           margin-top: 10px;
           @include input();
         }
-      }
-      button {
-        @include action-button($dark-blue);
       }
     }
   }

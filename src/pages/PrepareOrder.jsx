@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import axiosInstance from "../services/axiosConfig";
@@ -6,141 +6,179 @@ import Swal from "sweetalert2";
 
 function PrepareOrder() {
   const { id } = useParams();
-  const orderItems = document.getElementById("order-items");
-  const collectedItems = document.getElementById("collected-items");
-  const productIdInput = document.getElementById("product-id-input");
-  const insufficientStockButton = document.getElementById("insufficient-stock");
-  const completeOrderButton = document.getElementById("complete-order");
+  const [orderStatus, setOrderStatus] = useState("");
+  const [orderProducts, setOrderProducts] = useState([]);
+  const [collectedProducts, setCollectedProducts] = useState({});
+  const [productNameMap, setProductNameMap] = useState({});
+  const productIdInputRef = useRef(null);
 
   useEffect(() => {
-    getOrderProducs();
+    checkOrderStatus();
+    fetchOrderProducts();
   }, []);
 
-  async function getOrderProducs() {
-    const orderProductsResponse = await axiosInstance.get(
-      `/order/${id}/products`
-    );
-    const orderProducts = orderProductsResponse.data;
-    const orderItems = document.getElementById("order-items");
-    orderProducts.forEach((product) => {
-      const li = document.createElement("li");
-      li.className = "list-group-item";
-      li.textContent = `${product.name} - ${product.quantity}`;
-      li.dataset.productId = product.id;
-      li.dataset.productName = product.name;
-      li.dataset.quantity = product.quantity;
-      orderItems.appendChild(li);
-    });
-  }
+  const checkOrderStatus = async () => {
+    const response = await axiosInstance.get(`/order/${id}/status`);
+    const status = response.data;
+    setOrderStatus(status);
 
-  function handleKeyPress(e) {
+    if (status !== "StockConfirmed") {
+      await Swal.fire({
+        title: "Xəta!",
+        text: "Bu sifariş artıq toplanıb.",
+        icon: "error",
+        confirmButtonText: "Ok",
+        timer: 1500,
+        timerProgressBar: true,
+      });
+
+      window.location.href = "/orders/stockconfirmed";
+    }
+  };
+
+  const fetchOrderProducts = async () => {
+    const response = await axiosInstance.get(`/order/${id}/products`);
+    const products = response.data;
+    setOrderProducts(products);
+
+    const nameMap = {};
+    products.forEach((p) => {
+      nameMap[p.id] = p.name;
+    });
+    setProductNameMap(nameMap);
+  };
+
+  const handleKeyPress = async (e) => {
     if (e.key === "Enter") {
-      const productId = productIdInput.value;
-      const orderItem = Array.from(orderItems.children).find(
-        (item) => item.dataset.productId === productId
+      const productId = productIdInputRef.current.value.trim();
+      if (!productId) return;
+
+      const foundProductIndex = orderProducts.findIndex(
+        (p) => p.id === productId
       );
 
-      if (orderItem) {
-        const collectedItem = Array.from(collectedItems.children).find(
-          (item) => item.dataset.productId === productId
-        );
-
-        if (collectedItem) {
-          collectedItem.dataset.quantity =
-            parseInt(collectedItem.dataset.quantity) + 1;
-          collectedItem.textContent = `${collectedItem.dataset.productName} - ${collectedItem.dataset.quantity}`;
-        } else {
-          const li = document.createElement("li");
-          li.className = "list-group-item";
-          li.textContent = `${orderItem.dataset.productName} - 1`;
-          li.dataset.productId = productId;
-          li.dataset.productName = orderItem.dataset.productName;
-          li.dataset.quantity = 1;
-          collectedItems.appendChild(li);
-        }
-
-        orderItem.dataset.quantity = parseInt(orderItem.dataset.quantity) - 1;
-        if (orderItem.dataset.quantity == 0) {
-          orderItems.removeChild(orderItem);
-          if (orderItems.children.length == 0) {
-            Swal.fire({
-              title: "Sifariş tamamlandı!",
-              text: "Sifarişdəki bütün məhsullar toplandı.",
-              icon: "success",
-              confirmButtonText: "Ok",
-              timer: 1500,
-              timerProgressBar: true,
-            });
-            completeOrderButton.disabled = false;
-            insufficientStockButton.disabled = true;
-          }
-        } else {
-          orderItem.textContent = `${orderItem.dataset.productName} - ${orderItem.dataset.quantity}`;
-        }
+      if (foundProductIndex === -1) {
+        await Swal.fire({
+          title: "Xəta!",
+          text: "Bu ID ilə məhsul tapılmadı.",
+          icon: "error",
+          confirmButtonText: "Ok",
+          timer: 1500,
+          timerProgressBar: true,
+        });
+        return;
       }
-      productIdInput.value = "";
+
+      const updatedOrderProducts = [...orderProducts];
+      const product = updatedOrderProducts[foundProductIndex];
+
+      if (product.quantity <= 0) return;
+
+      // Miqdarı azaldırıq
+      product.quantity -= 1;
+
+      if (product.quantity === 0) {
+        updatedOrderProducts.splice(foundProductIndex, 1);
+      }
+
+      // Toplanan məhsullar siyahısında güncəllə
+      setCollectedProducts((prev) => ({
+        ...prev,
+        [productId]: (prev[productId] || 0) + 1,
+      }));
+
+      setOrderProducts(updatedOrderProducts);
+
+      if (updatedOrderProducts.length === 0) {
+        await Swal.fire({
+          title: "Sifariş tamamlandı!",
+          text: "Sifarişdəki bütün məhsullar toplandı.",
+          icon: "success",
+          confirmButtonText: "Ok",
+          timer: 1500,
+          timerProgressBar: true,
+        });
+      }
+
+      productIdInputRef.current.value = "";
     }
-  }
+  };
 
-  async function completeOrder() {
-    const collectedItems = Array.from(
-      document.getElementById("collected-items").children
-    );
-    const collectedItemsData = Object.fromEntries(
-      collectedItems.map((item) => [
-        item.dataset.productId,
-        parseInt(item.dataset.quantity, 10) || 0,
-      ])
-    );
+  const completeOrder = async () => {
+    const products = collectedProducts;
 
-    const data = {
-      products: collectedItemsData,
-    };
-
-    console.log(data);
-    const response = await axiosInstance.post(`/order/${id}/complete`, data);
+    const response = await axiosInstance.post(`/order/${id}/complete`, {
+      products,
+    });
 
     if (response.status === 200) {
-      Swal.fire({
+      await Swal.fire({
         title: "Sifariş tamamlandı!",
-        text: "Sifariş başarılı bir şekilde tamamlandı.",
+        text: "Sifariş başarılı bir şəkildə tamamlandı.",
         icon: "success",
         confirmButtonText: "Ok",
         timer: 1500,
         timerProgressBar: true,
       });
-      window.location.reload();
+      window.location.href = "/orders/stockconfirmed";
     }
-  }
+  };
 
   return (
     <Layout>
       <div className="row">
         <div className="col-md-6">
           <h3>Sifariş Məhsulları</h3>
-          <ul id="order-items" className="list-group"></ul>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Məhsul</th>
+                <th>Miqdar</th>
+                <th>Rəf</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orderProducts.map((product, index) => (
+                <tr key={product.id}>
+                  <td>{index + 1}</td>
+                  <td>{product.name}</td>
+                  <td>{product.quantity}</td>
+                  <td>{product.shelfCode}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className="col-md-6">
           <h3>Toplanan Məhsullar</h3>
-
           <video id="video" width="300" height="200"></video>
           <input
             type="text"
-            id="product-id-input"
+            ref={productIdInputRef}
             placeholder="Məhsulun barkodu"
             className="form-control mb-3"
             onKeyDown={handleKeyPress}
           />
-          <ul id="collected-items" className="list-group"></ul>
+          <ul className="list-group">
+            {Object.entries(collectedProducts).map(([productId, quantity]) => {
+              const name = productNameMap[productId] || "Naməlum məhsul";
+              return (
+                <li key={productId} className="list-group-item">
+                  {name} - {quantity}
+                </li>
+              );
+            })}
+          </ul>
           <div className="d-flex gap-3">
             <button
-              id="complete-order"
               className="btn btn-success mt-3"
               onClick={completeOrder}
+              disabled={orderProducts.length !== 0}
             >
               Toplamanı tamamla
             </button>
-            <button id="insufficient-stock" className="btn btn-warning mt-3">
+            <button className="btn btn-warning mt-3">
               Çatışmayan məhsullar
             </button>
           </div>

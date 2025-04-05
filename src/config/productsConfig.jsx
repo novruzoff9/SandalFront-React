@@ -1,4 +1,4 @@
-import { FaInfo, FaTrash } from "react-icons/fa";
+import { FaInfo, FaPlus, FaTrash } from "react-icons/fa";
 import axiosInstance from "../services/axiosConfig";
 import Swal from "sweetalert2";
 
@@ -43,7 +43,7 @@ const ProductActions = ({ product }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const endpoint = `/product/${id}`;
-        await axiosInstance.delete(endpoint).then(async() => {
+        await axiosInstance.delete(endpoint).then(async () => {
           await Swal.fire({
             title: "Silmək uğurla başa çatdı!",
             text: "Məhsul silindi",
@@ -54,18 +54,56 @@ const ProductActions = ({ product }) => {
 
           window.location.reload();
         });
-        
       }
     });
   };
 
-  const viewLocations = (id) => {
-    // define viewLocations function
+  const IncreaseProduct = (id) => {
+    Swal.fire({
+      title: "Məhsulun miqdarını artırın",
+      input: "number",
+      inputAttributes: {
+        min: 1,
+        max: 1000,
+        step: 1,
+      },
+      showCancelButton: true,
+      confirmButtonText: "Artır",
+      cancelButtonText: "İmtina et",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const endpoint = `/product/${id}/increase`;
+        await axiosInstance
+          .post(endpoint, result.value, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then(async () => {
+            await Swal.fire({
+              title: "Miqdar artırıldı!",
+              text: `Məhsulun miqdarı ${result.value} ədəd artırıldı`,
+              icon: "success",
+              timer: 1500,
+              timerProgressBar: true,
+            });
+          });
+
+        window.location.reload();
+      }
+    });
+  };
+
+  const viewDetails = (id) => {
+    window.location.href = `/products/details/${id}`;
   };
   return (
     <>
-      <button className="primary" onClick={() => viewLocations(product.id)}>
+      <button className="primary" onClick={() => viewDetails(product.id)}>
         <FaInfo />
+      </button>
+      <button className="primary" onClick={() => IncreaseProduct(product.id)}>
+        <FaPlus />{" "}
       </button>
       <button className="delete" onClick={() => deleteProduct(product.id)}>
         <FaTrash />{" "}

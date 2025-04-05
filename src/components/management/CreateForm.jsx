@@ -31,27 +31,39 @@ function CreateForm({ config }) {
       data[key] = value;
     });
 
-    const response = await axiosInstance.post(config.endpoint, data);
+    try {
+      const response = await axiosInstance.post(config.endpoint, data);
     
-
-    if (response.data.statusCode === 200) {
-      await Swal.fire({
-        title: "Əməliyyat uğurla yerinə yetirildi",
-        text: "Məlumat əlavə olundu",
-        icon: "success",
-        timer: 1000,
-        timerProgressBar: true,
-      });
-      const currentUrl = window.location.href;
-      window.location.href = `/${currentUrl.split("/")[3]}`;
-
-    } else {
+      if (response.data.statusCode === 200) {
+        await Swal.fire({
+          title: "Əməliyyat uğurla yerinə yetirildi",
+          text: "Məlumat əlavə olundu",
+          icon: "success",
+          timer: 1000,
+          timerProgressBar: true,
+        });
+    
+        const currentUrl = window.location.href;
+        window.location.href = `/${currentUrl.split("/")[3]}`;
+      } else {
+        showErrors(response.data.errors);
+      }
+    } catch (error) {
+      if (error.response) {
+        showErrors(error.response.data.errors);
+      } else {
+        console.error("Xəta baş verdi:", error);
+      }
+    }
+    
+    function showErrors(errors) {
       const errorMessages = document.getElementById("errormessages");
       errorMessages.innerHTML = "";
-      response.data.errors.forEach((error) => {
-        errorMessages.innerHTML += `<p style="color:red;">*${error}</p>`;
+      errors.forEach((error) => {
+        errorMessages.innerHTML += `<p style="color:red;">*${error.ErrorMessage}</p>`;
       });
     }
+    
   };
   return (
     <div id="addDataContainer">
@@ -74,7 +86,7 @@ function CreateForm({ config }) {
             )}
           </div>
         ))}
-        <button type="button" onClick={InsertData()}>Əlavə et</button>
+        <button type="button" onClick={InsertData()} className="primaryaction">Əlavə et</button>
         <div id="errormessages"></div>
       </form>
     </div>

@@ -151,15 +151,6 @@ section h5 {
   outline: none;
   border-radius: 8px;
 }
-#addDataContainer form button:last-of-type,
-.form-container button:last-of-type {
-  background-color: #4056a1;
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: #fff;
-  border: none;
-  outline: none;
-}
 
 #roleEditModal .modal-content h2,
 #changeBranchModal .modal-content h2 {
@@ -182,15 +173,6 @@ section h5 {
   border: 1px solid #ccc;
   outline: none;
   border-radius: 8px;
-}
-#roleEditModal .modal-content form button,
-#changeBranchModal .modal-content form button {
-  background-color: #4056a1;
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: #fff;
-  border: none;
-  outline: none;
 }
 
 @media only screen and (min-width: 600px) {
@@ -806,4 +788,39 @@ section h5 {
     width: calc(100% - 80px);
     margin-left: 80px;
   }
+}
+.badge {
+  display: inline-block;
+  padding: 0.5em 1em;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  color: white;
+}
+
+.badge.Shipped {
+  background-color: #28a745;
+}
+
+.badge.Prepared {
+  background-color: #ffc107;
+}
+
+.badge.Cancelled {
+  background-color: #dc3545;
+}
+
+.badge.Submitted {
+  background-color: #17a2b8;
+}
+
+.badge.Stockconfirmed {
+  background-color: #007bff;
+}
+
+.order-card {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
 }/*# sourceMappingURL=management.css.map */

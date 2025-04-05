@@ -28,7 +28,6 @@ function DeployProducts() {
     const response = await axiosInstance.get(`/shelf/${shelfCode}/products`);
     const productList = document.getElementById("productList");
     productList.innerHTML = "";
-    console.log(response.data);
 
     response.data.forEach((product) => {
       const listItem = document.createElement("li");

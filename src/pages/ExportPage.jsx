@@ -20,8 +20,6 @@ function ExportPage() {
       }
     );
 
-    console.log(exportFile);
-
     const url = window.URL.createObjectURL(exportFile.data);
 
     const link = document.createElement("a");
@@ -51,7 +49,7 @@ function ExportPage() {
           </div>
         </div>
 
-        <button type="submit">Təsdiq</button>
+        <button type="submit" className="primaryaction">Təsdiq</button>
       </form>
     </Layout>
   );

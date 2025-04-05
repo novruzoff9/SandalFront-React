@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
     }
     const fetchUserName = async () => {
       const response = await axiosInstance.get("/employee/current");
-      setUserName(response.data.data.userName);
+      setUserName(response.data.data.name);
     };
     fetchUserName();
   }, [token]);
