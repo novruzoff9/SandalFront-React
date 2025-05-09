@@ -1,0 +1,121 @@
+.customer-details-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  .customer-card {
+    flex: 1;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .info-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px 30px;
+
+      label {
+        font-weight: bold;
+        color: #666;
+        display: block;
+        font-size: 0.9rem;
+      }
+
+      p {
+        margin: 0.3rem 0 0;
+        font-size: 1rem;
+        color: #222;
+      }
+    }
+  }
+
+  .order-list {
+    flex: 1;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .order-card {
+      background-color: #fff;
+      border-radius: 0.75rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e5e7eb;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .order-header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .order-details {
+        font-size: 0.95rem;
+        color: #444;
+
+        span {
+          display: block;
+          margin-bottom: 0.25rem;
+        }
+      }
+      .status {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        text-transform: capitalize;
+        background-color: #e0e0e0;
+        color: #333;
+
+        &.stockconfirmed {
+          background-color: #ffe082;
+          color: #795548;
+        }
+
+        &.shipped {
+          background-color: #c8e6c9;
+          color: #2e7d32;
+        }
+
+        &.cancelled {
+          background-color: #ffcdd2;
+          color: #c62828;
+        }
+      }
+    }
+
+    .no-orders {
+      color: #888;
+      font-style: italic;
+    }
+  }
+}

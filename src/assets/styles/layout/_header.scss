@@ -109,6 +109,9 @@
         display: flex;
         flex-direction: column;
         padding: 10px 20px;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        border: 1px solid $primary-color-light;
         .alert {
           display: flex;
           flex-direction: row;
@@ -192,6 +195,9 @@
         display: flex;
         flex-direction: column;
         padding: 10px 20px;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        border: 1px solid $primary-color-light;
         a, div, button  {
           display: flex;
           flex-direction: row;

@@ -29,6 +29,9 @@ function LoginForm() {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
+
+      console.error(response); // Debugging line
+      
       
       if (response.status !== 200) {
         throw new Error(response.data || "Login failed");

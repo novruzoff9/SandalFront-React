@@ -3,7 +3,7 @@ import { FaInfo, FaPen, FaTrash } from "react-icons/fa";
 
 // companies Tablosu Konfigürasyonu
 export const companiesConfig = {
-  title: "Şirkətlər",
+  title: "Şirkət",
   columns: [
     { key: "name", label: "Adı" },
     { key: "boss", label: "Rəhbəri" },
@@ -11,9 +11,24 @@ export const companiesConfig = {
     { key: "workers", label: "İşçi" }
   ],
   endpoint: "/company",
-  renderActions: (company) => (
+  postEnpoint: "/company", // Əlavə etmisənsə
+  renderActions: (company) => <CompanyActions company={company} />,
+  inputs: [
+    { label: "Ad", name: "name", type: "text" },
+    { label: "Haqqında", name: "description", type: "text" },
+    { label: "Logo Url", name: "logoUrl", type: "text" },
+  ],
+};
+
+
+const CompanyActions = ({ company }) => {
+  const Edit = (id) => {
+    window.location.href = `/companies/edit/${id}`;
+  }
+  console.log(company);
+  
+  return(
     <>
-      {/* Detallı gör */}
       <button
         className="primary"
         title="Detallı gör"
@@ -21,7 +36,6 @@ export const companiesConfig = {
       >
         <FaInfo />
       </button>
-      {/* Düzəliş */}
       <button
         className="edit"
         title="Düzəliş"
@@ -29,7 +43,6 @@ export const companiesConfig = {
       >
         <FaPen />
       </button>
-      {/* Action 3 Açıklaması */}
       <button
         className="delete"
         title="Action 3 Açıklaması"
@@ -38,5 +51,5 @@ export const companiesConfig = {
         <FaTrash />
       </button>
     </>
-  ),
-};
+  )
+}

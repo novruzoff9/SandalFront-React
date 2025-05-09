@@ -13,11 +13,17 @@ export const CustomerConfig = {
   endpoint: "http://localhost:5000/customer",
   renderActions: (customer) => customerActions(customer),
   inputs: [
-    { label: "Ad", name: "firstName", type: "text", required: true },
-    { label: "Soyad", name: "lastName", type: "text", required: true },
-    { label: "Email", name: "email", type: "text", required: true },
-    { label: "Telefon", name: "phone", type: "text", required: true }
-  ],
+  { label: "Ad", name: "firstName", type: "text", required: true },
+  { label: "Soyad", name: "lastName", type: "text", required: true },
+  { label: "Email", name: "email", type: "text", required: true },
+  { label: "Telefon", name: "phone", type: "text", required: true },
+
+  // Ünvan məlumatları
+  { label: "Şəhər", name: "address.city", type: "text", required: true },
+  { label: "Rayon", name: "address.district", type: "text", required: true },
+  { label: "Küçə", name: "address.street", type: "text", required: true },
+  { label: "Poçt Kodu", name: "address.zipCode", type: "text", required: true },
+],
 };
 
 const customerActions = (customer) => {

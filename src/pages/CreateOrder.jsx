@@ -1,167 +1,180 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import axiosInstance from "../services/axiosConfig";
 
 function CreateOrder() {
+  const [warehouses, setWarehouses] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState("");
+  const [address, setAddress] = useState({
+    city: "",
+    district: "",
+    street: "",
+    zipCode: "",
+  });
+  const [orderItems, setOrderItems] = useState([
+    { productId: "", quantity: 1 }
+  ]);
+
   useEffect(() => {
-    loadOrderForm();
+    loadFormData();
   }, []);
-  const loadOrderForm = async () => {
-    try {
-      const warehouses = await axiosInstance.get(
-        "/warehouse"
-      );
 
-      const customers = await axiosInstance.get(
-        "/customer"
-      );
-
-      const warehouseSelect = document.getElementById("WarehouseIdSelect");
-      warehouses.data.data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.id;
-        option.text = item.name;
-        warehouseSelect.appendChild(option);
+  useEffect(() => {
+    const selectedCustomer = customers.find(c => c.id === selectedCustomerId);
+    if (selectedCustomer && selectedCustomer.address) {
+      setAddress({
+        city: selectedCustomer.address.city,
+        district: selectedCustomer.address.district,
+        street: selectedCustomer.address.street,
+        zipCode: selectedCustomer.address.zipCode,
       });
-
-      const customersSelect = document.getElementById("CustomerIdSelect");
-      customers.data.data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.id;
-        option.text = item.fullName;
-        customersSelect.appendChild(option);
-      });
-
-      additionalProductToOrder();
-
-
-    } catch (error) {
-      console.error("Error loading form data:", error);
     }
-  };
-  const additionalProductToOrder = async () => {
+  }, [selectedCustomerId]);
+
+  const loadFormData = async () => {
     try {
-      const products = await axiosInstance.get(
-        "/product"
-      );
+      const [warehouseRes, customerRes, productRes] = await Promise.all([
+        axiosInstance.get("/warehouse"),
+        axiosInstance.get("/customer"),
+        axiosInstance.get("/product"),
+      ]);
 
-      const additionalProductsContainer = document.getElementById(
-        "additionalProductsContainer"
-      );
-      const newProductDiv = document.createElement("div");
-
-      newProductDiv.innerHTML = `
-            <label for="ProductIdSelect">Məhsul:</label>
-            <select name="ProductId" class="ProductIdSelect"></select>
-            <label for="QuantityInput">Miqdar:</label>
-            <input type="number" name="Quantity" class="QuantityInput" min="1" value="1">
-            <button type="button" class="deleteaction ml-2">Sil</button>
-          `;
-
-      const productSelect = newProductDiv.querySelector(".ProductIdSelect");
-      products.data.data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.id;
-        option.text = item.name;
-        option.setAttribute("data-price", item.sellPrice);
-        option.setAttribute("data-imageUrl", item.imageUrl);
-        productSelect.appendChild(option);
-      });
-
-      additionalProductsContainer.appendChild(newProductDiv);
-    } catch (error) {
-      console.error("Error loading additional products:", error);
+      setWarehouses(warehouseRes.data.data);
+      setCustomers(customerRes.data.data);
+      setProducts(productRes.data.data);
+    } catch (err) {
+      console.error("Data load error:", err);
     }
   };
 
-  const CompleteOrder = async () => {
+  const handleAddProduct = () => {
+    setOrderItems([...orderItems, { productId: "", quantity: 1 }]);
+  };
 
-    const products = [];
-    const productSelects = document.querySelectorAll(".ProductIdSelect");
-    const quantityInputs = document.querySelectorAll(".QuantityInput");
-    productSelects.forEach((productSelect, index) => {
-      const product = {
-        ProductId: productSelect.value,
-        Quantity: quantityInputs[index].value,
-        ProductName: productSelect.options[productSelect.selectedIndex].text,
-        UnitPrice: productSelect.options[productSelect.selectedIndex].getAttribute("data-price"),
-        ImageUrl: productSelect.options[productSelect.selectedIndex].getAttribute("data-imageUrl")
+  const handleRemoveProduct = (index) => {
+    setOrderItems(orderItems.filter((_, i) => i !== index));
+  };
+
+  const handleProductChange = (index, field, value) => {
+    const updated = [...orderItems];
+    updated[index][field] = value;
+    setOrderItems(updated);
+  };
+
+  const handleCompleteOrder = async () => {
+    const selectedWarehouse = warehouses.find(w => w.id === document.getElementById("WarehouseIdSelect").value);
+    const finalItems = orderItems.map(item => {
+      const product = products.find(p => p.id === item.productId);
+      return {
+        ProductId: item.productId,
+        Quantity: item.quantity,
+        ProductName: product?.name,
+        UnitPrice: product?.sellPrice,
+        ImageUrl: product?.imageUrl,
       };
-      products.push(product);
     });
 
-    const warehouseId = document.getElementById("WarehouseIdSelect").value;
-    const warehouseName = document.getElementById("WarehouseIdSelect").options[document.getElementById("WarehouseIdSelect").selectedIndex].text;
-    const customerId = document.getElementById("CustomerIdSelect").value;
-    const city = document.getElementById("CityInput").value;
-    const district = document.getElementById("DistrictInput").value;
-    const street = document.getElementById("StreetInput").value;
-    const zipCode = document.getElementById("ZipCodeInput").value;
-    const address = {
-      City: city,
-      District: district,
-      Street: street,
-      ZipCode: zipCode,
+    const orderData = {
+      WarehouseId: selectedWarehouse?.id,
+      WarehouseName: selectedWarehouse?.name,
+      CustomerId: selectedCustomerId,
+      Address: {
+        City: address.city,
+        District: address.district,
+        Street: address.street,
+        ZipCode: address.zipCode,
+      },
+      OrderItems: finalItems,
     };
 
-    const orderData = {
-      WarehouseId: warehouseId,
-      WarehouseName: warehouseName,
-      OrderItems: products,
-      CustomerId: customerId,
-      Address: address,
+    try {
+      const res = await axiosInstance.post("/order", orderData);
+      if (res.status === 200) {
+        alert("Sifariş uğurla yaradıldı");
+        window.location.href = "/orders/active";
+      } else {
+        alert("Sifariş yaradılmadı");
+      }
+    } catch (err) {
+      console.error("Order creation failed:", err);
     }
-
-
-    const response = await axiosInstance.post("/order", orderData);
-    
-    if (response.status === 200) {
-      alert("Sifariş uğurla yaradıldı");
-      window.location.href = "/orders/active";
-    } else {
-      alert("Sifariş yaradılmadı");
-    }
-
   };
+
   return (
     <Layout>
       <div id="addDataContainer">
         <h2>Sifariş ver</h2>
-        <form id="addDataForm">
+        <form onSubmit={(e) => e.preventDefault()}>
           <label htmlFor="WarehouseIdSelect">Hansı Anbardan:</label>
-          <select name="WarehouseId" id="WarehouseIdSelect"></select>
+          <select id="WarehouseIdSelect">
+            <option value="" disabled>--Seçin--</option>
+            {warehouses.map((w) => (
+              <option key={w.id} value={w.id}>{w.name}</option>
+            ))}
+          </select>
 
           <label htmlFor="CustomerIdSelect">Hansı Müştəriyə:</label>
-          <select name="CustomerId" id="CustomerIdSelect"></select>
-
-          <div className="d-flex gap-2 align-items-center flex-wrap"> 
-            <label htmlFor="CityInput" className="mb-3">Şəhər:</label>
-            <input type="text" id="CityInput" name="City" placeholder="Şəhər adı" />
-
-            <label htmlFor="DistrictInput" className="mb-3">Rayon:</label>
-            <input type="text" id="DistrictInput" name="District" placeholder="Rayon adı" />
-
-            <label htmlFor="StreetInput" className="mb-3">Küçə:</label>
-            <input type="text" id="StreetInput" name="Street" placeholder="Küçə adı" />
-
-            <label htmlFor="ZipCodeInput" className="mb-3">Poçt Kodu:</label>
-            <input type="text" id="ZipCodeInput" name="ZipCode" placeholder="AZxxxx" />
-          </div>
-          <button
-            onClick={additionalProductToOrder}
-            type="button"
-            id="addProductButton"
-            className="successaction mb-2"
+          <select
+            id="CustomerIdSelect"
+            value={selectedCustomerId}
+            onChange={(e) => setSelectedCustomerId(e.target.value)}
           >
+            <option value="" disabled>--Seçin--</option>
+            {customers.map((c) => (
+              <option key={c.id} value={c.id}>{c.fullName}</option>
+            ))}
+          </select>
+
+          <div className="d-flex gap-2 align-items-center flex-wrap">
+            <label>Şəhər:</label>
+            <input type="text" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+
+            <label>Rayon:</label>
+            <input type="text" value={address.district} onChange={(e) => setAddress({ ...address, district: e.target.value })} />
+
+            <label>Küçə:</label>
+            <input type="text" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
+
+            <label>Poçt Kodu:</label>
+            <input type="text" value={address.zipCode} onChange={(e) => setAddress({ ...address, zipCode: e.target.value })} />
+          </div>
+
+          <button type="button" className="successaction mb-2" onClick={handleAddProduct}>
             Məhsul Artır
           </button>
-          <div id="additionalProductsContainer"></div>
 
-          <button
-            type="button"
-            onClick={CompleteOrder}
-            className="primaryaction"
-          >
+          <div>
+            {orderItems.map((item, index) => (
+              <div key={index} className="mb-3 gap-2 d-flex align-items-center flex-wrap">
+                <label>Məhsul:</label>
+                <select
+                  className="ProductIdSelect"
+                  value={item.productId}
+                  onChange={(e) => handleProductChange(index, "productId", e.target.value)}
+                >
+                  <option value="" disabled>--Seçin--</option>
+                  {products.map((p) => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
+                </select>
+                <label>Miqdar:</label>
+                <input
+                  type="number"
+                  min="1"
+                  className="QuantityInput"
+                  value={item.quantity}
+                  onChange={(e) => handleProductChange(index, "quantity", e.target.value)}
+                />
+                <button type="button" onClick={() => handleRemoveProduct(index)} className="deleteaction ml-2">
+                  Sil
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button type="button" onClick={handleCompleteOrder} className="primaryaction">
             Sifarişi tamamla
           </button>
         </form>

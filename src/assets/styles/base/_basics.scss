@@ -100,7 +100,8 @@ section {
 }
 
 #addDataContainer form,
-.form-container {
+.form-container,
+#editDataContainer form{
   display: flex;
   flex-direction: column;
   .inputGroup {

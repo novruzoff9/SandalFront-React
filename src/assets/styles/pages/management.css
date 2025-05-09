@@ -126,25 +126,30 @@ section h5 {
 }
 
 #addDataContainer form,
-.form-container {
+.form-container,
+#editDataContainer form {
   display: flex;
   flex-direction: column;
 }
 #addDataContainer form .inputGroup,
-.form-container .inputGroup {
+.form-container .inputGroup,
+#editDataContainer form .inputGroup {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
 }
 #addDataContainer form label,
-.form-container label {
+.form-container label,
+#editDataContainer form label {
   margin-bottom: 6px;
   color: #2d2f31;
 }
 #addDataContainer form input,
 #addDataContainer form select,
 .form-container input,
-.form-container select {
+.form-container select,
+#editDataContainer form input,
+#editDataContainer form select {
   margin-bottom: 14px;
   padding: 8px 16px;
   border: 1px solid #ccc;
@@ -485,6 +490,9 @@ section h5 {
     display: flex;
     flex-direction: column;
     padding: 10px 20px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: 1px solid rgba(45, 47, 49, 0.2666666667);
   }
   header #notficiations-menu .content .alert {
     display: flex;
@@ -572,6 +580,9 @@ section h5 {
     display: flex;
     flex-direction: column;
     padding: 10px 20px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: 1px solid rgba(45, 47, 49, 0.2666666667);
   }
   header #profile-menu .content a, header #profile-menu .content div, header #profile-menu .content button {
     display: flex;
@@ -823,4 +834,111 @@ section h5 {
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
+}
+
+.customer-details-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}
+@media (max-width: 768px) {
+  .customer-details-container {
+    flex-direction: column;
+  }
+}
+.customer-details-container .customer-card {
+  flex: 1;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.customer-details-container .customer-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+.customer-details-container .customer-card .info-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 30px;
+}
+.customer-details-container .customer-card .info-group label {
+  font-weight: bold;
+  color: #666;
+  display: block;
+  font-size: 0.9rem;
+}
+.customer-details-container .customer-card .info-group p {
+  margin: 0.3rem 0 0;
+  font-size: 1rem;
+  color: #222;
+}
+.customer-details-container .order-list {
+  flex: 1;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.customer-details-container .order-list h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+.customer-details-container .order-list .order-card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease;
+}
+.customer-details-container .order-list .order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.customer-details-container .order-list .order-card .order-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.customer-details-container .order-list .order-card .order-details {
+  font-size: 0.95rem;
+  color: #444;
+}
+.customer-details-container .order-list .order-card .order-details span {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.customer-details-container .order-list .order-card .status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  background-color: #e0e0e0;
+  color: #333;
+}
+.customer-details-container .order-list .order-card .status.stockconfirmed {
+  background-color: #ffe082;
+  color: #795548;
+}
+.customer-details-container .order-list .order-card .status.shipped {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+.customer-details-container .order-list .order-card .status.cancelled {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+.customer-details-container .order-list .no-orders {
+  color: #888;
+  font-style: italic;
 }/*# sourceMappingURL=management.css.map */

@@ -27,6 +27,9 @@ function ProductDetails() {
   const BackProducts = () => {
     window.location.href = "/products";
   };
+  const EditForm = () => {
+    window.location.href = `/products/edit/${productId}`;
+  }
 
   return (
     <Layout>
@@ -43,22 +46,25 @@ function ProductDetails() {
           <div className="col-md-6">
             <h2>{product.name}</h2>
             <p>
-              <strong>Category:</strong> {product.category}
+              <strong>Kateqoriya:</strong> {product.category}
             </p>
             <p>
-              <strong>Description:</strong> {product.description}
+              <strong>Haqqında:</strong> {product.description}
             </p>
             <p>
-              <strong>Price:</strong> ${product.sellPrice.toFixed(2)}
+              <strong>Alış qiyməti:</strong> ₼{product.purchasePrice.toFixed(2)}
             </p>
             <p>
-              <strong>Stock:</strong> {product.quantity} ədəd mövcuddur
+              <strong>Satış qiyməti:</strong> ₼{product.sellPrice.toFixed(2)}
+            </p>
+            <p>
+              <strong>Stok:</strong> {product.quantity} ədəd mövcuddur
             </p>
 
             <div className="d-flex gap-2 mt-3">
-              <button className="btn btn-primary">Add to Cart</button>
+              <button className="btn btn-primary" onClick={EditForm}>Düzəliş et</button>
               <button className="btn btn-secondary" onClick={BackProducts}>
-                Back to Products
+                Məhsullara qayıt
               </button>
             </div>
           </div>

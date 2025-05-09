@@ -18,6 +18,8 @@ import PrepareOrder from "./pages/PrepareOrder";
 import OrderList from "./pages/OrderList";
 import { CustomerConfig } from "./config/customerConfig";
 import ProductDetails from "./pages/ProductDetails";
+import EditPage from "./pages/EditPage";
+import CustomerDetails from "./pages/CustomerDetails";
 
 function App() {
   return (
@@ -41,6 +43,10 @@ function App() {
           element={<ProtectedRoute component={() => <CreatePage config={companiesConfig} />} />}
         />
         <Route
+          path="/companies/edit/:id"
+          element={<ProtectedRoute component={() => <EditPage config={companiesConfig} />} />}
+        />
+        <Route
           path="/products"
           element={
             <ProtectedRoute
@@ -51,6 +57,10 @@ function App() {
         <Route
           path="/products/create"
           element={<ProtectedRoute component={() => <CreatePage config={productsConfig} />} />}
+        />
+        <Route
+          path="/products/edit/:id"
+          element={<ProtectedRoute component={() => <EditPage config={productsConfig} />} />}
         />
         <Route
           path="/products/details/:id"
@@ -99,6 +109,14 @@ function App() {
           element={<ProtectedRoute component={() => <CreatePage config={CustomerConfig} />} />}
         />
         <Route
+          path="/customers/edit/:id"
+          element={<ProtectedRoute component={() => <EditPage config={CustomerConfig} />} />}
+        />
+        <Route
+          path="/customers/details/:id"
+          element={<ProtectedRoute component={() => <CustomerDetails />} />}
+        />
+        <Route
           path="/warehouses"
           element={
             <ProtectedRoute
@@ -109,6 +127,10 @@ function App() {
         <Route
           path="/warehouses/create"
           element={<ProtectedRoute component={() => <CreatePage config={warehousesConfig} />} />}
+        />
+        <Route
+          path="/warehouses/edit/:id"
+          element={<ProtectedRoute component={() => <EditPage config={warehousesConfig} />} />}
         />
         <Route
           path="/shelves"

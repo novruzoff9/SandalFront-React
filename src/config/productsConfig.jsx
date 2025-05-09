@@ -19,13 +19,13 @@ export const productsConfig = {
     { label: "Haqqında", name: "description", type: "text" },
     {
       label: "Alış Qiyməti",
-      name: "PurchasePrice",
+      name: "purchasePrice",
       type: "number",
       step: "0.01",
     },
-    { label: "Satış Qiyməti", name: "SellPrice", type: "number", step: "0.01" },
-    { label: "Miqdar", name: "Count", type: "number" },
-    { label: "Şəkil url", name: "ImageUrl", type: "text" },
+    { label: "Satış Qiyməti", name: "sellPrice", type: "number", step: "0.01" },
+    { label: "Miqdar", name: "quantity", type: "number" },
+    { label: "Şəkil url", name: "imageUrl", type: "text" },
   ],
 };
 

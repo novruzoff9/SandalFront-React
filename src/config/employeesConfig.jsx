@@ -27,8 +27,7 @@ export const employeesConfig = {
 const EmployeeActions = ({ employee }) => {
   // Rolları Görüntüleme
   const changeRole = async (id) => {
-    let response = await axiosInstance.get("http://localhost:5001/api/roles");
-    //let response = await axiosInstance.get("http://104.248.36.17:5001/api/roles");
+    let response = await axiosInstance.get("roles");
     let roles = response.data;
 
     const inputOptions = roles.reduce((options, role) => {
