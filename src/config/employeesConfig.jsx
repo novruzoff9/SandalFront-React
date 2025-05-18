@@ -6,16 +6,18 @@ import axiosInstance from "../services/axiosConfig";
 export const employeesConfig = {
   title: "İşçi",
   columns: [
-    { key: "name", label: "Ad" },
+    { key: "firstName", label: "Ad" },
     { key: "email", label: "Email" },
     { key: "warehouseName", label: "Filial" },
-    { key: "role", label: "Rol" },
+    { key: "roles", label: "Rol" },
   ],
   endpoint: "/employee",
   renderActions: (employee) => <EmployeeActions employee={employee} />,
   inputs: [
-    { label: "Ad", name: "name", type: "text" },
+    { label: "Ad", name: "firstName", type: "text" },
+    { label: "Soyad", name: "lastName", type: "text" },
     { label: "Email", name: "email", type: "email" },
+    { label: "Telefon", name: "phoneNumber", type: "text" },
     { label: "Şifrə", name: "password", type: "password" },
     { label: "Filial", name: "warehouseId", type: "select", endpoint: "/warehouse" },
     //{ label: "Rol", name: "roleId", type: "select", endpoint: "/roles" },
@@ -29,9 +31,10 @@ const EmployeeActions = ({ employee }) => {
   const changeRole = async (id) => {
     let response = await axiosInstance.get("roles");
     let roles = response.data;
-
+    
     const inputOptions = roles.reduce((options, role) => {
-      options[role.id] = role.name;
+      options[role.id] = role.roleName;
+      
       return options;
     }, {});
 
@@ -47,7 +50,11 @@ const EmployeeActions = ({ employee }) => {
     if (!role) {
       return;
     }
-    let request = await axiosInstance.post(`/Employee/assign-role?userId=${id}&roleId=${role}`);
+    const body = {
+      userId: id,
+      roleId: role,
+    }
+    let request = await axiosInstance.post(`/Employee/assignrole`, body);
     if (request.status === 200) {
       Swal.fire("Uğurlu", "Rol uğurla əlavə olundu", "success");
     } else {
@@ -76,7 +83,13 @@ const EmployeeActions = ({ employee }) => {
     if (!warehouse) {
       return;
     }
-    let request = await axiosInstance.post(`/employee/updatebranch?userId=${id}&branchId=${warehouse}`);
+    const body = {
+      userId: id,
+      warehouseId: warehouse,
+    }
+    let request = await axiosInstance.post(`/employee/update-branch`, body);
+    console.log(request);
+    
     if (request.status === 200) {
       Swal.fire("Uğurlu", "Filial uğurla dəyişdirildi", "success");
     } else {

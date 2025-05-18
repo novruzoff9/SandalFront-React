@@ -1,9 +1,11 @@
 import { FaCog, FaSignOutAlt, FaUser } from "react-icons/fa"
+import Cookies from "js-cookie";
 
 
 function ProfileMenu() {
   const logout = () => {
     localStorage.removeItem("token");
+    Cookies.remove("subscription");
     window.location.href = "/login";
   };
   return (

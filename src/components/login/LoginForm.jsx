@@ -7,32 +7,24 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("Nov2005!!");
   const [roles, setRoles] = useState("");
+  const [error, setError] = useState(""); // setError metodu üçün state əlavə edildi
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const clientId = "MVCUserApiClient";
-    const clientSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
-    const grantType = "password";
-
-    const body = new URLSearchParams();
-    body.append("grant_type", grantType);
-    body.append("client_id", clientId);
-    body.append("client_secret", clientSecret);
-    body.append("username", email);
-    body.append("password", password);
+    const body = {
+      email: email,
+      password: password,
+    };
 
     try {
       const response = await axiosInstance.post("/get-token", body, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
       });
 
-      console.error(response); // Debugging line
-      
-      
       if (response.status !== 200) {
         throw new Error(response.data || "Login failed");
       }
@@ -42,17 +34,21 @@ function LoginForm() {
       localStorage.setItem("token", token);
 
       const decodedToken = await jwtDecode(token);
+      console.log(decodedToken);
+      
 
       Redirect(decodedToken.roles);
     } catch (error) {
-      console.error("Error: " + error.message);
+      let errorMessage = "Giriş zamanı xəta baş verdi.";
+      if (error.response && error.response.data && error.response.data.Message) {
+        errorMessage = error.response.data.Message;
+      }
+      setError(errorMessage); // Xətanı ekrana çıxarmaq üçün setError istifadə olunur
     }
   };
 
   const Redirect = (role) => {
-
     if (role === "admin" || role === "boss" || role === "warehouseman") {
-
       window.location.href = "/dashboard";
     } else {
       console.error("Rol tapılmadı!");
@@ -90,6 +86,11 @@ function LoginForm() {
               required
             />
           </div>
+          {error && (
+            <div className="error-message" style={{ color: "red", marginBottom: "10px" }}>
+              {error}
+            </div>
+          )}
           <button type="submit" className="btn-login">
             Daxil Ol
           </button>

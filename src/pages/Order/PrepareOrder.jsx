@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import Layout from "../components/layout/Layout";
-import axiosInstance from "../services/axiosConfig";
 import Swal from "sweetalert2";
+import Layout from "../../components/layout/Layout";
+import axiosInstance from "../../services/axiosConfig";
 
 function PrepareOrder() {
   const { id } = useParams();

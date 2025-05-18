@@ -41,6 +41,10 @@ function WarehouseOccupancy() {
             display: true,
             position: "bottom",
           },
+          title: {
+            display: true,
+            text: "Anbarın doluluq faizi",
+          },
         },
       },
     });

@@ -9,21 +9,25 @@ import { employeesConfig } from "./config/employeesConfig";
 import { warehousesConfig } from "./config/warehousesConfig";
 import { shelvesConfig } from "./config/shelvesConfig";
 import CreatePage from "./pages/CreatePage";
-import CreateOrder from "./pages/CreateOrder";
+import CreateOrder from "./pages/Order/CreateOrder";
 import DeployProducts from "./pages/DeployProducts";
 import { companiesConfig } from "./config/companiesConfig";
-import OrderDetails from "./pages/OrderDetails";
+import OrderDetails from "./pages/Order/OrderDetails";
 import ExportPage from "./pages/ExportPage";
-import PrepareOrder from "./pages/PrepareOrder";
-import OrderList from "./pages/OrderList";
+import PrepareOrder from "./pages/Order/PrepareOrder";
+import OrderList from "./pages/Order/OrderList";
 import { CustomerConfig } from "./config/customerConfig";
 import ProductDetails from "./pages/ProductDetails";
 import EditPage from "./pages/EditPage";
 import CustomerDetails from "./pages/CustomerDetails";
+import { SubscriptionProvider } from "./context/SubscriptionContext";
+import UnloadProducts from "./pages/UnloadProducts";
+import CustomUnload from "./pages/CustomUnload";
 
 function App() {
   return (
     <AuthProvider>
+      <SubscriptionProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
@@ -152,9 +156,15 @@ function App() {
           path="/deploy"
           element={<ProtectedRoute component={() => <DeployProducts />} />}
         />
-        
+
+        <Route
+          path="/unload"
+          element={<ProtectedRoute component={() => <UnloadProducts />} />}
+        />
+        <Route path="/unload/custom" element={<CustomUnload />} />
         <Route path="*" element={<ProtectedRoute component={Dashboard} />} />
       </Routes>
+      </SubscriptionProvider>
     </AuthProvider>
   );
 }

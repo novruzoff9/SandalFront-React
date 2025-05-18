@@ -1,6 +1,4 @@
-import Layout from "../components/layout/Layout";
 import { useParams } from "react-router-dom";
-import axiosInstance from "../services/axiosConfig";
 import { useEffect, useState } from "react";
 import {
     FaBarcode,
@@ -19,6 +17,8 @@ import {
   FaUserShield,
   FaWarehouse,
 } from "react-icons/fa";
+import Layout from "../../components/layout/Layout";
+import axiosInstance from "../../services/axiosConfig";
 
 function OrderDetails() {
   const { id } = useParams();

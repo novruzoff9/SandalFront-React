@@ -41,6 +41,15 @@ const MonthlySalesChart = () => {
           ],
         },
         options: {
+          plugins: {
+            legend: {
+              position: "bottom",
+            },
+            title: {
+              display: true,
+              text: "Ay üzrə satışlar",
+            },
+          },
           scales: {
             y: {
               beginAtZero: true,

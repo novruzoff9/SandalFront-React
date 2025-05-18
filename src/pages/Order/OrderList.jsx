@@ -3,9 +3,9 @@ import {
   getOrderColumns,
   getOrderConfig,
   OrderActions,
-} from "../config/ordersConfig";
-import DynamicTable from "./DynamicTable";
-import { useAuth } from "../context/AuthContext";
+} from "../../config/ordersConfig";
+import DynamicTable from "../DynamicTable";
+import { useAuth } from "../../context/AuthContext";
 
 const OrderList = () => {
   const { userRole } = useAuth();

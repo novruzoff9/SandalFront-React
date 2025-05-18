@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Layout from "../components/layout/Layout";
-import axiosInstance from "../services/axiosConfig";
+import Layout from "../../components/layout/Layout";
+import axiosInstance from "../../services/axiosConfig";
 
 function CreateOrder() {
   const [warehouses, setWarehouses] = useState([]);

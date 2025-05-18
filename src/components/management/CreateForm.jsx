@@ -39,11 +39,12 @@ function CreateForm({ config }) {
       });
     });
 
-    console.log(data);
+    //console.log(data);
 
     try {
       const response = await axiosInstance.post(config.endpoint, data);
-
+      console.log(response);
+      
       if (response.data.statusCode === 201) {
         await Swal.fire({
           title: "Əməliyyat uğurla yerinə yetirildi",
@@ -60,7 +61,8 @@ function CreateForm({ config }) {
       }
     } catch (error) {
       if (error.response) {
-        showErrors(error.response.data.errors);
+        showErrors(error.response.data.Message);
+        
       } else {
         console.error("Xəta baş verdi:", error);
       }
@@ -69,9 +71,10 @@ function CreateForm({ config }) {
     function showErrors(errors) {
       const errorMessages = document.getElementById("errormessages");
       errorMessages.innerHTML = "";
-      errors.forEach((error) => {
-        errorMessages.innerHTML += `<p style="color:red;">*${error.ErrorMessage}</p>`;
-      });
+      errorMessages.innerHTML += `<p style="color:red;">*${errors}</p>`;
+      // errors.forEach((error) => {
+      //   errorMessages.innerHTML += `<p style="color:red;">*${error}</p>`;
+      // });
     }
   };
   return (
@@ -95,10 +98,10 @@ function CreateForm({ config }) {
             )}
           </div>
         ))}
+        <div id="errormessages"></div>
         <button type="button" onClick={InsertData()} className="primaryaction">
           Əlavə et
         </button>
-        <div id="errormessages"></div>
       </form>
     </div>
   );

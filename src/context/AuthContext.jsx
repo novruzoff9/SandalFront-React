@@ -13,6 +13,8 @@ export function AuthProvider({ children }) {
     if (token) {
       const decoded = jwtDecode(token);
       setUserRole(decoded.roles);
+      setUserName(decoded.fullName ? decoded.fullName.substring(0, decoded.fullName.indexOf(' ')) : null);
+      
     }
   }, [token]);
 
@@ -20,17 +22,6 @@ export function AuthProvider({ children }) {
     const decoded = jwtDecode(token);
     return decoded.exp < Date.now() / 1000;
   };
-
-  useEffect(() => {
-    if(localStorage.getItem("token") === null){
-      return;
-    }
-    const fetchUserName = async () => {
-      const response = await axiosInstance.get("/employee/current");
-      setUserName(response.data.data.name);
-    };
-    fetchUserName();
-  }, [token]);
 
   return (
     <AuthContext.Provider value={{ token, userRole, userName, isTokenExpired }}>
